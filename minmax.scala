@@ -1,45 +1,29 @@
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkConf
-import org.apache.spark.rdd.RDD
+import scala.io.StdIn
+import scala.collection.mutable.ArrayBuffer
 
-
-
-object wordcount {
-
-  def main(args: Array[String]) {
-
-    val pathToFile = "/home/subhrajit/sparkProjects/data/log.txt"
-
-    
-
-    val conf = new SparkConf()
-      .setAppName("Wordcount")
-      .setMaster("local[*]")
-
-    val sc = new SparkContext(conf)
-
-    
-
-    val wordsRdd = sc.textFile(pathToFile)
-      .flatMap(_.split(" "))
-
-   
-
-    
-
-    val wordCountInitRdd = wordsRdd.map(word => (word, 1))
-
-    
-
-    val wordCountRdd = wordCountInitRdd.reduceByKey((v1, v2) => v1 + v2)
-    
-
-    
-
-    val highFreqWords = wordCountRdd.filter(x => x._2 > 4)
-
-    
-
-    highFreqWords.saveAsTextFile("wordcountsDir")
-  }
-}
+object MinMax{
+	def main(args: Array[String]):Unit = {
+		var numArray = new ArrayBuffer[Int]()
+		println("Enter no. of elements")
+		val n = scala.io.StdIn.readInt()
+		println("Enter elements")
+		for(i<- 1 to n)
+			numArray+=scala.io.StdIn.readInt()
+		println(numArray)
+		
+		val t=minmax(numArray)
+		println("Max is ",t._1)
+		println("Min is ",t._2)
+	}
+	def minmax(numArray: ArrayBuffer[Int]):(Int,Int)={
+		var min:Int=999
+		var max:Int=(-999)
+		for(value <- numArray){
+			if(value>max)
+				max = value
+			else if(value<min)
+				min = value
+		}
+		(max,min)
+	}
+} 
